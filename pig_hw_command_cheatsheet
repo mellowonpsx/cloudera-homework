@@ -1,0 +1,60 @@
+sqoop import \
+--connect jdbc:mysql://localhost/dualcore \
+--username training --password training \
+--fields-terminated-by '\t' \
+--warehouse-dir /dualcore \
+--table employees
+
+sqoop import \
+--connect jdbc:mysql://localhost/dualcore \
+--username training --password training \
+--fields-terminated-by '\t' \
+--warehouse-dir /dualcore \
+--table customers
+
+sqoop import \
+--connect jdbc:mysql://localhost/dualcore \
+--username training --password training \
+--fields-terminated-by '\t' \
+--warehouse-dir /dualcore \
+--table products
+
+sqoop import \
+--connect jdbc:mysql://localhost/dualcore \
+--username training --password training \
+--fields-terminated-by '\t' \
+--warehouse-dir /dualcore \
+--table orders
+
+sqoop import \
+--connect jdbc:mysql://localhost/dualcore \
+--username training --password training \
+--fields-terminated-by '\t' \
+--warehouse-dir /dualcore \
+--table order_details \
+--split-by=order_id
+
+--- pig
+data = LOAD 'sample1.txt';
+DUMP data;
+
+first_2_columns = LOAD 'sample1.txt' AS
+(keyword:chararray, campaign_id:chararray);
+
+DUMP first_2_columns;
+
+DESCRIBE first_2_columns;
+
+// mod scripts
+hadoop fs -put $ADIR/data/ad_data1.txt dualcore
+
+pig first_etl.pig
+
+//check
+hadoop fs -cat dualcore/ad_data1/part-m-00000 | less
+//erase
+hadoop fs -rm -r dualcore/ad_data1
+
+
+//next 
+pig -x local second_etl.pig 

@@ -1,0 +1,25 @@
+A1,05-01-2013,00:00:47,techwiz.example.com,SIDE,0,62,camera
+A1,05-01-2013,00:00:55,techfire.example.com,SIDE,0,62,e-book
+A1,05-01-2013,00:01:21,techtips.example.com,SIDE,0,66, drawing
+A1,05-01-2013,00:01:34,technews.example.com,TOP,0,72,laptop
+A1,05-01-2013,00:05:55,techpack.example.com,INLINE,0,61,LCD
+A1,05-01-2013,00:07:31,techwire.example.com,TOP,0,76,sketch
+A1,05-01-2013,00:10:52,techpack.example.com,SIDE,0,58,chat
+A1,05-01-2013,00:11:57,trumpeter.example.com,SIDE,0,64,virtual
+A1,05-01-2013,00:12:45,siliconwire.example.com,SIDE,0,58,UI
+A1,05-01-2013,00:12:45,siliconwire.example.com,SIDE,0,58,UI
+A1,05-01-2013,00:13:42,techline.example.com,BOTTOM,0,64,bluetooth
+A1,05-01-2013,00:14:43,techflash.example.com,TOP,0,80,ARTWORK
+A1,05-01-2013,00:18:18,tabletreviews.example.com,BOTTOM,0,64,apps
+A1,05-01-2013,00:18:37,tabletreviews.example.com,SIDE,0,82,graduation
+A1,05-01-2013,00:18:52,techbuzz.example.com,TOP,0,66,surfing
+A1,05-01-2013,00:18:55,supportwiz.example.com,SIDE,0,64,apps
+A1,05-01-2013,00:20:15,vbscriptcentral.example.com,SIDE,0,74,travel
+A1,05-01-2013,00:21:51,techreviews.example.com,BOTTOM,0,64,virtual
+A1,05-01-2013,00:22:44,technews.example.com,SIDE,0,60,e-book
+A1,05-01-2013,00:23:35,supportwiz.example.com,TOP,0,80, deal
+A1,05-01-2013,00:23:47,siliconcenter.example.com,TOP,0,82,travel
+A1,05-01-2013,00:27:02,techsizzle.example.com,SIDE,0,60,WIFI
+A1,05-01-2013,00:27:12,ultranet.example.com,BOTTOM,0,57,dualcore
+A1,05-01-2013,00:27:44,techbits.example.com,BOTTOM,0,57,e-book
+A1,05-01-2013,00:28:12,trumpeter.example.com,SIDE,0,68,professor

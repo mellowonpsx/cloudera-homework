@@ -1,0 +1,76 @@
+flume-ng agent --conf conf -f flume.conf -n TwitterAgent
+
+flume-ng agent -n TwitterAgent -c . -f flume.conf
+
+mvn clean package -D skipTests
+flume-ng agent -n TwitterAgent -c . -f flume.conf
+
+/* parametrized version */
+
+#flume-ng agent -n TwitterAgent -c . -f flume.conf \
+flume-ng agent --name TwitterAgent --conf . --conf-file flume.conf
+
+hadoop fs -cp /user/flume/tweets/2014/12/27/* /user/hive/warehouse/ESCA/tweets/
+
+
+-- from Desktop/data folder
+
+hadoop fs -put ./dictionary /user/hive/warehouse/ESCA/
+hadoop fs -put ./tweets /user/hive/warehouse/ESCA/
+
+
+#sudo mv hive-serdes-1.0-SNAPSHOT.jar /usr/lib/hive/lib/
+sudo cp json-serde-1.3-jar-with-dependencies.jar /usr/lib/hive/lib/
+
+# hive version
+ls /usr/lib/hive/lib/ | grep "hive-hwi-\d*\.\d*\.d*-.*"
+
+-- table example
+CREATE EXTERNAL TABLE new_tweets_lol_update_2 (
+   id bigint,
+   source string,
+   text string
+)
+ROW FORMAT SERDE 'com.cloudera.hive.serde.JSONSerDe'
+LOCATION '/user/hive/warehouse/ESCA/tweets/';
+SELECT * FROM `default.customers`;
+
+//verify db is on mysql -h localhost.localdomain -P 3306 -u root -p ESCA
+
+#working sentiment_data sqoop
+sqoop export \
+	--connect jdbc:mysql://localhost.localdomain:3306/ESCA \
+	--username root \
+	--password root \
+	--table sentiment_data \
+	--update-key id,type \
+	--export-dir /user/hive/warehouse/ESCA/sentiment_data/ \
+	--update-mode allowinsert \
+	--input-fields-terminated-by '\001' \
+	--lines-terminated-by '\n'
+
+#export global report
+sqoop export \
+	--connect jdbc:mysql://localhost.localdomain:3306/ESCA \
+	--username root \
+	--password root \
+	--table sentiment_global_report \
+	--update-key full_date \
+	--export-dir /user/hive/warehouse/ESCA/sentiment_global_report/ \
+	--update-mode allowinsert \
+	--input-fields-terminated-by '\001' \
+	--lines-terminated-by '\n'
+	
+#export daily report
+sqoop export \
+	--connect jdbc:mysql://localhost.localdomain:3306/ESCA \
+	--username root \
+	--password root \
+	--table sentiment_daily_report \
+	--update-key full_date_time \
+	--export-dir /user/hive/warehouse/ESCA/sentiment_daily_report/ \
+	--update-mode allowinsert \
+	--input-fields-terminated-by '\001' \
+	--lines-terminated-by '\n'	
+	
+hive -e "set hive.cli.print.header = true; SELECT ESCA_data.*, sentiment_evaluation.polarity, sentiment_evaluation.sentiment FROM ESCA_data JOIN sentiment_evaluation ON (ESCA_data.id = sentiment_evaluation.id) LIMIT 1;"

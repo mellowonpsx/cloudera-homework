@@ -1,0 +1,25 @@
+lightweight	D8	05/01/2013	00:00:08	gamersite.example.com	0	72	USA	SIDE
+accelerometer	B1	05/01/2013	00:00:10	datawire.example.com	0	78	USA	INLINE
+pc	D3	05/01/2013	00:00:16	datasnap.example.com	0	49	USA	BOTTOM
+dualcore	D7	05/01/2013	00:00:22	datawire.example.com	0	58	USA	SIDE
+ apps	C2	05/01/2013	00:00:23	albumreview.example.com	0	72	NETHERLANDS	INLINE
+review	D7	05/01/2013	00:00:37	amateurcoder.example.com	0	66	USA	SIDE
+browser	D5	05/01/2013	00:00:39	datascientist.example.com	0	79	USA	INLINE
+touchscreen	B2	05/01/2013	00:00:47	burritofinder.example.com	0	84	USA	SIDE
+social	A2	05/01/2013	00:01:06	photosite.example.com	0	82	USA	TOP
+accelerometer	C5	05/01/2013	00:01:16	linuxlife.example.com	0	92	USA	TOP
+ social	D6	05/01/2013	00:01:23	datasnap.example.com	0	73	USA	INLINE
+GAMES	C5	05/01/2013	00:01:59	cellnews.example.com	0	74	USA	INLINE
+student	D9	05/01/2013	00:02:05	megatips.example.com	0	60	USA	BOTTOM
+TABLET	D5	05/01/2013	00:02:05	dealfinder.example.com	0	100	USA	TOP
+tablet	D7	05/01/2013	00:02:20	megasource.example.com	1	100	USA	TOP
+lightweight	C6	05/01/2013	00:02:29	amateurcoder.example.com	0	80	USA	SIDE
+portable	D4	05/01/2013	00:02:34	diskcentral.example.com	1	68	USA	BOTTOM
+PDA	C8	05/01/2013	00:02:43	bitpress.example.com	0	48	USA	BOTTOM
+apps	B4	05/01/2013	00:02:45	bytewiz.example.com	0	54	USA	SIDE
+dualcore	C4	05/01/2013	00:02:54	filmport.example.com	0	58	USA	SIDE
+pictures	A2	05/01/2013	00:02:58	salestiger.example.com	0	72	USA	SIDE
+present	B7	05/01/2013	00:03:00	burritofinder.example.com	0	100	USA	TOP
+pictures	B8	05/01/2013	00:03:01	dvdreview.example.com	0	66	USA	SIDE
+bluetooth	B8	05/01/2013	00:03:05	audiophile.example.com	0	82	USA	TOP
+lightweight	B9	05/01/2013	00:03:06	audioexpert.example.com	0	88	USA	TOP

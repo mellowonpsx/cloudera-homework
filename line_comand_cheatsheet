@@ -1,0 +1,233 @@
+//==from lab 1==
+//set up vm
+~/scripts/developer/training_setup_dev.sh
+
+//execute a bash command 
+hadoop fs -command (ls/rm/mv/mkdir/cd/cat/...)
+
+//put file to HDFS
+hadoop fs -put shakespeare /user/training/shakespeare
+
+//get file from HDFS
+hadoop fs -get shakespeare/poems ~/shakepoems.txt
+
+//uncompress to STDOUT and send to hadoop
+gunzip -c access_log.gz | hadoop fs -put - weblog/access_log
+
+//see all content of a folder (also without quotes)
+hadoop fs -cat "wordlengthsPHP/*"
+
+//==from lab 2==
+
+//compile java (pay attention on ` differet from ') (also without quotes)
+javac -classpath `hadoop classpath` "stubs/*.java"
+
+//create a jar file (also without quotes)
+jar cvf wc.jar "stubs/*.class"
+
+//execute a jar (shakespeare = input folder, wordcounts = output folder)
+hadoop jar wc.jar stubs.WordCount shakespeare wordcounts
+
+//remove a folder
+hadoop fs -rm -r wordcounts
+
+//list job
+mapred job -list
+
+//kill job (job id from list job)
+mapred job -kill jobid
+
+//run a jar compiled with eclipse
+hadoop jar avgwordlength.jar solution.AvgWordLength shakespeare wordlengths
+
+//test a map/reduce in php
+cat shakepoems.txt | php avgMapper.php | sort | php avgReducer.php
+
+//test a map/reduce in php v2
+tail --lines 10 shakepoems.txt | php avgMapper.php | sort | php avgReducer.php
+
+//run a jar with php map/reduce
+hadoop jar /usr/lib/hadoop-0.20-mapreduce\
+/contrib/streaming/hadoop-streaming-2.0.0-mr1-cdh4.2.1.jar \
+-input shakespeare \
+-output wordlengthsPHP \
+-mapper 'php avgMapper.php' \
+-reducer 'php avgReducer.php' \
+-file /home/training/avgReducer.php \
+-file /home/training/avgMapper.php
+
+//run a jar compiled with parametert
+hadoop jar toolrunner.jar solution.AvgWordLength shakespeare wordlengthsParam
+
+hadoop jar toolrunner.jar solution.AvgWordLength -D caseSensitive=true shakespeare wordlengthsParamCS
+
+//example with combiner
+hadoop jar wc.jar solution.WordCount shakespeare wc
+hadoop jar wordCountCombiner.jar solution.WordCountDriver shakespeare wcC
+//compare the two output
+hadoop fs -cat wc/part-r-00000 > wc.tmp
+hadoop fs -cat wcC/part-r-00000 > wcC.tmp
+diff wc.tmp wcC.tmp
+
+//run job in local mode
+hadoop jar toolrunner.jar solution.AvgWordLength -D caseSensitive=true -jt=local -fs=file:/// ~/training_materials/developer/data/shakespeare ~/shakeout
+
+//for eclipse run configuration use only absolute path
+-D caseSensitive=true /home/training/training_materials/developer/data/shakespeare /home/training/shakeout_eclipse
+
+//diff to compare output
+diff shakeout/part-r-00000 shakeout_eclipse/part-r-00000
+
+//logging level DEBUG
+hadoop jar awcLog.jar solution.AvgWordLength -D caseSensitive=true mapred.map.child.log.level=DEBUG s awld
+
+//multiple erase
+hadoop fs -rm -r awld awld2 awld3 awld4 count2 processlogsCOMPLETE processlogstestlog wc wcC wordlengths wordlengthsNOCASE wordlengthsPHP wordlengthsParam wordlengthsParamCS
+
+//multiple erase
+hadoop fs -rm -r awld*
+
+//show only part of file
+hadoop fs -cat testlog/* | head -n 5
+
+//logCounter
+hadoop jar logCounter.jar stubs.ImageCounter testlog lc
+hadoop jar logCounter.jar stubs.ImageCounter weblog lc1
+hadoop fs -rm -r lc*
+
+//processLog
+hadoop jar pL.jar solution.ProcessLogs testlog pL
+
+//writables (on local mode, in eclipse, remember absolute path)
+hadoop jar writables.jar solution.StringPairTestDriver -jt=local -fs=file:/// ~/training_materials/developer/data/nameyeartestdata ~/tempout
+
+cat tempout/part-r-00000 
+rm -rf tempout/
+
+
+//create sequence file
+hadoop jar createSequenceFile.jar solution.CreateSequenceFile weblog uncompressedsf
+
+hadoop fs -cat uncompressedsf/part-m-00000 | less
+
+hadoop jar createSequenceFile.jar solution.CreateSequenceFile weblog compressedsf
+
+hadoop fs -cat compressedsf/part-m-00000 | less
+
+hadoop fs -du -h
+
+hadoop jar createSequenceFile.jar solution.ReadCompressedSequenceFile compressedsf compressedsftotext
+
+hadoop fs -cat compressedsftotext/part-m-00000 | less
+
+hadoop jar createSequenceFile.jar solution.CreateSequenceFile -D mapred.output.compressed=true weblog csf2
+
+hadoop fs -cat csf2/part-m-00000 | less
+
+hadoop fs -rm -r compressedsf compressedsftotext uncompressedsf  csf2
+
+
+//inverted index
+hadoop jar invertedIndex.jar solution.InvertedIndex invertedIndexInput invertedIndexOutput
+
+
+//co occurence (s = really small subset of shakespere)
+hadoop jar wordCoOccurrence.jar solution.WordCo s wCO
+
+//extracredit 1
+hadoop jar wordCoOccurrence.jar extracredit.WordCo s wCO
+//extracredit 2
+hadoop jar wordCoOccurrence.jar extracredit.WordCoAscendingFrequency wCO wCOAF
+//extracredit 3
+hadoop jar wordCoOccurrence.jar extracredit.WordCoDescendingFrequency wCO wCODF
+
+
+//sqoop
+sqoop list-databases \
+--connect jdbc:mysql://localhost \
+--username training --password training
+
+sqoop list-tables \
+--connect jdbc:mysql://localhost/movielens \
+--username training --password training
+
+sqoop import \
+--connect jdbc:mysql://localhost/movielens \
+--username training --password training \
+--fields-terminated-by '\t' --table movie
+
+hadoop fs -ls movie
+hadoop fs -tail movie/part-m-00000
+
+sqoop import \
+--connect jdbc:mysql://localhost/movielens \
+--username training --password training \
+--fields-terminated-by '\t' --table movierating
+
+hadoop fs -ls movierating
+hadoop fs -tail movierating/part-m-00000
+
+//oozie
+
+sudo /etc/init.d/oozie start
+cd ~/workspace/oozie-labs
+
+./run.sh lab1-java-mapreduce
+
+oozie job -oozie http://localhost:11000/oozie -info 0000000-141212103421792-oozie-oozi-W
+
+
+//lab 8-3
+hadoop fs -put nameyeartestdata nameyeartestdata/
+
+hadoop jar secsort.jar example.NameYearDriver \
+-Dmapred.reduce.tasks=0 nameyeartestdata secsortout
+
+hadoop fs -cat secsortout/part-r-00000 | head
+
+//with 2 reducer
+hadoop jar secsort.jar example.NameYearDriver \
+-Dmapred.reduce.tasks=2 nameyeartestdata secsortout2
+
+hadoop fs -cat secsortout2/part-r-00000 | head
+hadoop fs -cat secsortout2/part-r-00001 | head
+
+//with custom partitioner
+hadoop jar secsort.jar example.NameYearDriver -D mapred.reduce.tasks=2 -D mapreduce.partitioner.class=example.NameYearPartitioner nameyeartestdata secsortout3
+
+hadoop fs -cat secsortout3/part-r-00000 | head
+hadoop fs -cat secsortout3/part-r-00001 | head
+
+
+//with custom comparator
+hadoop jar secsort.jar example.NameYearDriver \
+	-D mapred.reduce.tasks=2 \
+	-D mapred.output.key.comparator.class=example.NameYearComparator \
+	-D mapreduce.partitioner.class=example.NameYearPartitioner \
+	 nameyeartestdata secsortout4
+
+hadoop fs -cat secsortout4/part-r-00000 | head
+hadoop fs -cat secsortout4/part-r-00001 | head
+
+//with custom reducer
+hadoop jar secsort.jar example.NameYearDriver \
+	-D mapred.reduce.tasks=2 \
+	-D mapreduce.partitioner.class=example.NameYearPartitioner \
+	-D mapred.output.key.comparator.class=example.NameYearComparator \
+	-D mapreduce.reduce.class=example.NameYearReducer \
+	 nameyeartestdata secsortout5
+
+hadoop fs -cat secsortout5/part-r-00000 | head
+hadoop fs -cat secsortout5/part-r-00001 | head
+
+//with custom group comparator
+hadoop jar secsort.jar example.NameYearDriver \
+	-D mapred.reduce.tasks=2 \
+	-D mapreduce.partitioner.class=example.NameYearPartitioner \
+	-D mapred.output.key.comparator.class=example.NameYearComparator \
+	-D mapreduce.reduce.class=example.NameYearReducer \
+	-D mapred.output.value.groupfn.class=example.NameComparator \
+	 nameyeartestdata secsortout6
+
+hadoop fs -cat secsortout6/part-r-00000 | head
+hadoop fs -cat secsortout6/part-r-00001 | head
